@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body class="{% if result or keep_app_open %}app-open{% endif %}">
+    <div class="page-shell"></div>
+    <section class="intro-screen {% if result or keep_app_open %}is-hidden{% endif %}" id="introScreen" {% if result or keep_app_open %}aria-hidden="true"{% endif %}>
+        <div class="intro-overlay"></div>
+        <div class="intro-content">
+            <span class="intro-badge">منصة إدراك</span>
+            <h1>
+                <span>مرحبا بك في منصة ادراك</span>
+                <span>لتحليل العقود و قياس المخاطر</span>
+            </h1>
+            <p>منصة تدرس الأنظمة السعودية لتقديم أفضل تجربة</p>
+            <button class="intro-button" id="enterPlatform" type="button">ابدا التحليل وادرك</button>
+        </div>
+    </section>
+
+    <main class="layout app-shell" id="appShell">
+        <section id="workspace" class="hero-card">
+            <div class="hero-copy">
+                <span class="eyebrow">Saudi Labor Contract Analyzer</span>
+                <h1>تحليل محلي دقيق لعقود العمل السعودية بندا بندا</h1>
+                <p>
+                    يرفع النظام العقد، يقسمه إلى بنود مستقلة، ثم يراجع كل بند على حدة مقابل نظام العمل السعودي
+                    باستخدام استرجاع قانوني موجّه لكل بند بدل تمرير العقد كاملا دفعة واحدة.
+                </p>
+                <div class="hero-badges">
+                    <span>Clause-by-Clause</span>
+                    <span>RAG قانوني</span>
+                    <span>JSON منظم</span>
+                </div>
+            </div>
+            <div class="hero-panel">
+                <div class="glass-card accent-card">
+                    <div class="metric-label">الحالة العامة</div>
+                    <div class="metric-value">{{ result.summary.status if result else "جاهز للتحليل" }}</div>
+                    <div class="metric-note">يتم تقييم كل بند على حدة مع استرجاع أعلى 3 مواد قانونية مرتبطة به.</div>
+                </div>
+                <div class="stat-grid">
+                    <div class="glass-card">
+                        <span>High</span>
+                        <strong>{{ result.summary.high if result else 0 }}</strong>
+                    </div>
+                    <div class="glass-card">
+                        <span>Medium</span>
+                        <strong>{{ result.summary.medium if result else 0 }}</strong>
+                    </div>
+                    <div class="glass-card">
+                        <span>Low</span>
+                        <strong>{{ result.summary.low if result else 0 }}</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="upload-card">
+            <div class="section-head">
+                <h2>رفع الملفات</h2>
+                <p>ملف العقد إلزامي. ملف البنود الإضافي اختياري ويستخدم كمرجع إضافي فقط، بينما التحليل الأساسي يعتمد على نظام العمل السعودي.</p>
+            </div>
+
+            <form method="POST" action="/analyze" enctype="multipart/form-data" class="upload-form">
+                <label class="file-field">
+                    <span>ملف البنود أو المرجع الداخلي (اختياري)</span>
+                    <input type="file" name="clauses_file" accept=".pdf,.docx,.txt">
+                    <small>يمكن رفع لائحة عمل أو نموذج بنود إضافي، وسيبقى التحليل الأساسي قائما حتى بدون هذا الملف.</small>
+                </label>
+                <label class="file-field">
+                    <span>ملف العقد المراد تحليله</span>
+                    <input type="file" name="contract_file" accept=".pdf,.docx,.txt" required>
+                    <small>سيتم تقسيم العقد إلى بنود مستقلة ثم تحليل كل بند ضد المواد القانونية الأكثر ارتباطا به.</small>
+                </label>
+                <button class="primary-button" type="submit">ابدأ التحليل</button>
+                {% if result %}
+                <a class="secondary-button reset-link" href="/?app=1#workspace">إعادة تعيين العقد</a>
+                {% endif %}
+            </form>
+        </section>
+
+        {% if result %}
+        <section class="results-grid">
+            <article class="results-card">
+                <div class="section-head">
+                    <h2>ملخص النتائج</h2>
+                    <p>
+                        تم تحليل {{ result.contract_clauses_count }} بندا من العقد
+                        {% if result.custom_clauses_used %}
+                        مع {{ result.clauses_count }} بندا إضافيا من الملف المرجعي الاختياري.
+                        {% else %}
+                        بالاعتماد المباشر على نظام العمل السعودي.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="summary-strip">
+                    <div>
+                        <span>إجمالي البنود</span>
+                        <strong>{{ result.summary.total_contract_clauses }}</strong>
+                    </div>
+                    <div>
+                        <span>البنود المخالفة</span>
+                        <strong>{{ result.summary.flagged_clauses }}</strong>
+                    </div>
+                    <div>
+                        <span>إجمالي المخالفات</span>
+                        <strong>{{ result.summary.total_violations }}</strong>
+                    </div>
+                </div>
+
+                <div class="summary-strip extra-summary">
+                    <div>
+                        <span>البنود السليمة</span>
+                        <strong>{{ result.summary.safe_clauses }}</strong>
+                    </div>
+                    <div>
+                        <span>تحتاج مراجعة</span>
+                        <strong>{{ result.summary.needs_review_clauses }}</strong>
+                    </div>
+                    <div>
+                        <span>الراتب المستخرج</span>
+                        <strong>{{ result.salary_info.label }}</strong>
+                    </div>
+                </div>
+
+                <div class="summary-strip extra-summary">
+                    <div>
+                        <span>التزامات الموظف</span>
+                        <strong>{{ result.obligations.employee|length }}</strong>
+                    </div>
+                    <div>
+                        <span>محاور غير مغطاة</span>
+                        <strong>{{ result.checklist_gaps|length }}</strong>
+                    </div>
+                    <div>
+                        <span>التقرير</span>
+                        <button class="secondary-button" type="button" id="downloadReport">تحميل التقرير</button>
+                    </div>
+                </div>
+
+                <div class="results-meta-grid">
+                    <div class="meta-card">
+                        <h3>الالتزامات</h3>
+                        <div class="obligations-sections">
+                            <div>
+                                <h4>التزامات الموظف</h4>
+                                <ul class="meta-list obligations-list">
+                                    {% for item in result.obligations.employee %}
+                                    <li>{{ item.text }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meta-card">
+                        <h3>التغطية النظامية</h3>
+                        <ul class="meta-list">
+                            <li>تم تحليل كل بند بشكل مستقل وليس ككتلة واحدة.</li>
+                            <li>يتم استرجاع أعلى 3 مواد قانونية لكل بند قبل التقييم.</li>
+                            <li>كل بند يعود كمدخل مستقل داخل JSON النهائي.</li>
+                            {% for gap in result.checklist_gaps %}
+                            <li>محور يحتاج حضور أو صياغة أوضح: {{ gap }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                {% if result.error %}
+                <div class="finding-item risk-medium">
+                    <div class="finding-header">
+                        <h3>مشكلة في الملف المرفوع</h3>
+                        <span class="risk-chip">تنبيه</span>
+                    </div>
+                    <p>{{ result.error }}</p>
+                </div>
+                {% endif %}
+            </article>
+
+            <aside class="results-card contract-heatmap">
+                <div class="section-head">
+                    <h2>خريطة العقد</h2>
+                    <p>نتائج التحليل لجميع البنود المخالفة لنظام العمل السعودي، مع حالة كل بند والمادة القانونية.</p>
+                </div>
+                <div class="heatmap-list">
+                    {% set visible_clauses = result.all_clause_analyses | rejectattr('status', 'equalto', 'Safe') | list %}
+                    {% if visible_clauses %}
+                    {% for clause in visible_clauses %}
+                    <div class="finding-item risk-{{ clause.risk_level|lower }}">
+                        <div class="finding-header">
+                            <h3>{{ clause.clause_title }}</h3>
+                            <span class="risk-chip">{{ clause.risk_level }}</span>
+                        </div>
+                        <p class="result-row"><strong>الحالة:</strong> {% if clause.status == "Violation" %}مخالفة{% elif clause.status == "Needs Review" %}تحتاج مراجعة{% else %}سليم{% endif %}</p>
+                        <p class="result-row"><strong>البند:</strong> {{ clause.clause_label }}</p>
+                        {% if clause.violations %}
+                            {% for issue in clause.violations %}
+                            <p class="result-row"><strong>المخالفة:</strong> {{ issue.message }}</p>
+                            <p><strong>المادة:</strong> {{ issue.article }}</p>
+                            <p><strong>التعديل المقترح:</strong> {{ issue.suggestion }}</p>
+                            {% endfor %}
+                        {% elif clause.retrieval_alert %}
+                            <p><strong>تنبيه الاسترجاع:</strong> {{ clause.retrieval_alert }}</p>
+                        {% else %}
+                            <p>لم تظهر مخالفة واضحة لهذا البند ضمن checklist الحالية.</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="finding-item risk-low">
+                        <div class="finding-header">
+                            <h3>لا توجد بنود ظاهرة تحتاج تنبيها</h3>
+                            <span class="risk-chip">Safe</span>
+                        </div>
+                        <p>جميع البنود التي تم تحليلها ظهرت سليمة ضمن الفحص الحالي، لذلك تم إخفاء البنود الآمنة من هذه القائمة.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </aside>
+        </section>
+        <textarea id="reportText" hidden>{{ result.report_text if result else "" }}</textarea>
+        {% endif %}
+    </main>
+
+    <script src="{{ url_for('static', path='/app.js') }}"></script>
+</body>
+</html>
