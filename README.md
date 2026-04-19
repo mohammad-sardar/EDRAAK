@@ -11,7 +11,7 @@ The platform stands out by offering precise local analysis of Saudi labor contra
 ## File Upload & Processing
 The system provides a user-friendly interface where users can upload the contract intended for analysis. It also offers an optional feature to upload internal reference files, such as a company’s internal work regulations, to make the analysis even more tailored to specific organizational needs.
 
-![File Upload Section](path_to_your_image2.jpg)
+![File Upload Section](https://github.com/mohammad-sardar/EDRAAK/blob/main/IMAGES/Screenshot%202026-04-19%20112744.png)
 
 ## Core Functionalities & Features
 Once the processing is complete, the platform generates a comprehensive report that includes:
