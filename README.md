@@ -28,3 +28,8 @@ Once the processing is complete, the platform generates a comprehensive report t
 * **Legal RAG Integration:** Connects AI insights directly to statutory legal references.
 * **Structured Outputs:** Ability to export data in organized formats like JSON for further integration.
 * **Modern UI:** A professional dark-themed dashboard designed for optimal user experience.
+---
+
+> [!IMPORTANT]
+> **Environment Note:** This project is currently configured and optimized for **Localhost execution**. 
+> Due to the complex architectural dependencies, large dataset handling, and integrated AI cleansing modules, the system is designed to run within a dedicated local development environment rather than a live web demo.
