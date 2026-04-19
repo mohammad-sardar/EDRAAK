@@ -3,7 +3,7 @@
 
 Edrak is an advanced AI platform specifically designed to analyze labor contracts and ensure their compliance with the Saudi Labor Law. The system automates the legal review process by meticulously examining clauses, identifying potential risks, and providing corrective recommendations based on local regulations.
 
-![Edrak Main Interface]([path_to_your_image1.jpg](https://github.com/mohammad-sardar/EDRAAK/blob/main/IMAGES/Screenshot%202026-04-19%20112738.png))
+![Edrak Main Interface](https://github.com/mohammad-sardar/EDRAAK/blob/main/IMAGES/Screenshot%202026-04-19%20112738.png)
 
 ## Project Overview
 The platform stands out by offering precise local analysis of Saudi labor contracts on a "clause-by-clause" basis. Instead of processing the contract as a single block of text, the system segments the document and cross-references each individual clause against the Saudi Labor Law. It utilizes Retrieval-Augmented Generation (RAG) to fetch relevant legal articles for every analysis, ensuring high reliability and transparency.
