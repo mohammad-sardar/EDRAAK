@@ -1,7 +1,7 @@
 # Edrak Platform | منصة إدراك
-### AI-Powered Contract Analysis & Risk Assessment
+### AI-Powered Saudi Contract Analysis & Risk Assessment
 
-Edrak is an advanced AI platform specifically designed to analyze labor contracts and ensure their compliance with the Saudi Labor Law. The system automates the legal review process by meticulously examining clauses, identifying potential risks, and providing corrective recommendations based on local regulations.
+Edrak is an advanced AI platform specifically designed to analyze Saudi labor contracts and ensure their compliance with the Saudi Labor Law. The system automates the legal review process by meticulously examining clauses, identifying potential risks, and providing corrective recommendations based on local regulations.
 
 ![Edrak Main Interface](https://github.com/mohammad-sardar/EDRAAK/blob/main/IMAGES/Screenshot%202026-04-19%20112738.png)
 
@@ -21,7 +21,7 @@ Once the processing is complete, the platform generates a comprehensive report t
 * **Regulatory Coverage:** Direct linking of each analysis to specific legal articles from the Saudi Labor Law (e.g., Article 98, Article 107, etc.).
 * **Proposed Amendments:** Suggested legal wording to correct non-compliant clauses and bring them into full alignment with the law.
 
-![Analysis Dashboard](path_to_your_image3.jpg)
+![Analysis Dashboard](https://github.com/mohammad-sardar/EDRAAK/blob/main/IMAGES/Screenshot%202026-04-19%20113002.png)
 
 ## Technical Highlights
 * **Clause-by-Clause Analysis:** Deep granular text processing.
